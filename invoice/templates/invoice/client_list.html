@@ -1,0 +1,39 @@
+{% extends 'invoice/base.html' %}
+{% block 'body' %}
+{% load widget_tweaks %}
+
+<div class="container mt-5">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Code</th>
+        <th scope="col">Name</th>
+        <th scope="col">Address</th>
+        <th scope="col">Initial Balance</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for client in object_list %}
+      <tr>
+        <td>{{ client.code }}</td>
+        <td>{{ client.name }}</td>
+        <td>{{ client.address }}</td>
+        <td>{{ client.initialBalance }}</td>
+        <td>
+            <form class="form-inline" action="{% url 'delete_client' client.id %}" method="post">
+              {% csrf_token %}
+              <a href="{% url 'update_client' client.id %}">
+                <button type="button" class="btn btn-primary m-1">Update</button>
+              </a>
+              <button type="submit" class="btn btn-danger m-1">Delete</button>
+            </form>
+          </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock %}

@@ -16,8 +16,9 @@ class Company(models.Model):
 
 class Client(models.Model):
     name = models.CharField(max_length=256)
-    code = models.CharField(max_length=64)
+    code = models.CharField(max_length=64, unique=True)
     address = models.TextField(blank=True)
+    initialBalance = models.FloatField()
 
     def __str__(self):
         return f"{self.name}"
@@ -25,7 +26,7 @@ class Client(models.Model):
 
 # Client Balance : Client Name + Total Sales + Total Payments + Balance (initial balance+Sales-Payments)
 class Balance(models.Model):
-    client = models.ForeignKey('Client', on_delete=models.CASCADE)
+    client = models.OneToOneField('Client', on_delete=models.CASCADE)
     sales = models.FloatField()
     payments = models.FloatField()
     balance = models.FloatField()
