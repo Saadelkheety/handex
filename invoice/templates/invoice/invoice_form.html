@@ -1,0 +1,41 @@
+{% extends 'invoice/base.html' %}
+{% block 'body' %}
+{% load widget_tweaks %}
+
+<div class="container">
+
+  <h1 class="m-5">{% if invoice %}Update the invoice details:{% else %}Add the invoice details:{% endif %}</h1>
+
+  <h2>{{ note }}</h2>
+
+
+  <form {% if invoice %} action="{% url 'update_invoice' invoice.id %}" {% else %} action="{% url 'create_invoice' %}" {% endif %} method="post" class="text-center">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group {%if field.errors %}alert alert-danger{%endif%} mx-auto">
+
+
+      {{ field.errors }}
+      {% render_field field class="form-control mb-2 mr-sm-2" placeholder=field.label %}
+
+      {% endfor %}
+    </div>
+
+    <h3>Add products:</h3>
+     {{ formset.management_form }}
+    {% for form in formset %}
+      <br>
+      {% for field in form %}
+          {{ field.errors }}
+          {% render_field field class="form-control mb-2 mr-sm-2" placeholder=field.label %}
+      {% endfor %}
+
+    {% endfor %}
+
+
+    <button type="submit" class="btn btn-primary">{% if invoice %}Save updates{% else %}Submit{% endif %}</button>
+  </form>
+
+
+</div>
+{% endblock %}

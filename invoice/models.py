@@ -29,15 +29,15 @@ class Balance(models.Model):
     client = models.OneToOneField('Client', on_delete=models.CASCADE)
     sales = models.FloatField()
     payments = models.FloatField()
-    balance = models.FloatField()
+    # balance = models.FloatField()
 
     def __str__(self):
-        return f"{self.client.name} balance is {self.balance}"
+        return f"{self.client.name} balance"
 
 
 # Product : code + product name + price
 class Product(models.Model):
-    code = models.CharField(max_length=64)
+    code = models.CharField(max_length=64, unique=True)
     name = models.CharField(max_length=64)
     price = models.FloatField()
 
@@ -50,10 +50,23 @@ class Product(models.Model):
 
 
 class Invoice(models.Model):
-    number = models.CharField(max_length=64)
+    number = models.CharField(max_length=64, unique=True)
     date = models.DateField(auto_now_add=True)
     client = models.ForeignKey('Client', on_delete=models.CASCADE)
-    total = models.FloatField()
+
+    def amountDue(self):
+        items = self.InvoiceItem_set.all()
+        amount_due = 0.0
+        for item in items:
+            amount_due += (item.price * item.quantity)
+        return amount_due
+
+    def amountPaid(self):
+        payments = self.Payment_set.all()
+        amount_paid = 0.0
+        for payment in payments:
+            amount_paid += payment.amountPaid
+        return amount_paid
 
     def __str__(self):
         return f"invoice number: {self.number} of the client {self.client.name}"
@@ -72,11 +85,9 @@ class InvoiceItem(models.Model):
 
 
 class Payment(models.Model):
-    client = models.ForeignKey('Client', on_delete=models.CASCADE)
     invoice = models.ForeignKey('Invoice', on_delete=models.CASCADE)
-    amountDue = models.FloatField()
     amountPaid = models.FloatField()
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"payment of {self.client}"
+        return f"payment of {self.invoice}"
