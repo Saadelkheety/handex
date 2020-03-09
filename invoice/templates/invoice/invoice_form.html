@@ -21,12 +21,15 @@
       {% endfor %}
     </div>
 
-    <h3>Add products:</h3>
+    <h3>{% if invoice %}Update invoice products: {% else %}Add products to the invoice:{% endif %}</h3>
      {{ formset.management_form }}
     {% for form in formset %}
       <br>
       {% for field in form %}
           {{ field.errors }}
+          {% if field.label == "Delete" %}
+          {{ field.label }}
+          {% endif %}
           {% render_field field class="form-control mb-2 mr-sm-2" placeholder=field.label %}
       {% endfor %}
 

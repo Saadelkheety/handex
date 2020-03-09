@@ -17,6 +17,8 @@ urlpatterns = [
     path("create_balance/", views.BalanceCreate.as_view(), name="create_balance"),
     path("update_balance/<int:pk>/", views.BalanceUpdate.as_view(), name="update_balance"),
     path("delete_balance/<int:pk>/", views.BalanceDelete.as_view(), name="delete_balance"),
-    path("invoice/", views.InvoiceList.as_view(), name="list_invoices"),
+    path("invoices/", views.InvoiceList.as_view(), name="list_invoices"),
     path("create_invoice/", views.InvoiceCreate.as_view(), name="create_invoice"),
+    path("update_invoice/<int:pk>/", views.InvoiceUpdate.as_view(), name="update_invoice"),
+    path("delete_invoice/<int:pk>/", views.InvoiceDelete.as_view(), name="delete_invoice"),
 ]

@@ -55,14 +55,14 @@ class Invoice(models.Model):
     client = models.ForeignKey('Client', on_delete=models.CASCADE)
 
     def amountDue(self):
-        items = self.InvoiceItem_set.all()
+        items = self.invoiceitem_set.all()
         amount_due = 0.0
         for item in items:
             amount_due += (item.price * item.quantity)
         return amount_due
 
     def amountPaid(self):
-        payments = self.Payment_set.all()
+        payments = self.payment_set.all()
         amount_paid = 0.0
         for payment in payments:
             amount_paid += payment.amountPaid

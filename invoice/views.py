@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -153,7 +153,7 @@ class InvoiceCreate(CreateView):
     form_class = InvoiceForm
     model = Invoice
     template_name = "invoice/invoice_form.html"
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('list_invoices')
 
     def get(self, request, *args, **kwargs):
         self.object = None
@@ -181,3 +181,46 @@ class InvoiceCreate(CreateView):
 
     def form_invalid(self, form, formset):
         return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+
+class InvoiceUpdate(UpdateView):
+    form_class = InvoiceForm
+    model = Invoice
+    template_name = "invoice/invoice_form.html"
+    success_url = reverse_lazy('list_invoices')
+
+    def get(self, request, pk, *args, **kwargs):
+        self.object = self.get_object()
+        form = InvoiceForm(instance=self.object)
+        formset = InvoiceItemFormSet(instance=self.object)
+        formset.can_delete = True
+        print("test: ", self.get_context_data(form=form,formset=formset))
+        return self.render_to_response(
+            self.get_context_data(form=form,formset=formset))
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = InvoiceForm(self.request.POST, instance=self.object)
+        formset = InvoiceItemFormSet(self.request.POST, instance=self.object)
+        formset.can_delete = True
+        if (form.is_valid() and formset.is_valid()):
+            return self.form_valid(form, formset)
+        else:
+            return self.form_invalid(form, formset)
+
+    def form_valid(self, form, formset):
+        self.object = form.save()
+        formset.instance = self.object
+        formset.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, formset):
+        return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+
+class InvoiceDelete(DeleteView):
+    success_url = reverse_lazy('list_invoices')
+    model = Invoice
+
+    def get(self, *a, **kw):
+        return self.delete(*a, **kw)
