@@ -1,5 +1,5 @@
 from django.forms import ModelForm, inlineformset_factory
-from invoice.models import Company, Client, Product, Balance, Invoice, InvoiceItem
+from invoice.models import Company, Client, Product, Balance, Invoice, InvoiceItem, Payment
 
 class CompanyForm(ModelForm):
     class Meta:
@@ -45,6 +45,12 @@ class BalanceForm(ModelForm):
 class InvoiceForm(ModelForm):
     class Meta:
         model = Invoice
+        fields = "__all__"
+
+
+class PaymentForm(ModelForm):
+    class Meta:
+        model = Payment
         fields = "__all__"
 
 

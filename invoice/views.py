@@ -4,8 +4,8 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from invoice.forms import CompanyForm, ClientForm, ProductForm, BalanceForm, InvoiceForm, InvoiceItemForm, InvoiceItemFormSet
-from invoice.models import Company, Client, Product, Balance, Invoice, InvoiceItem
+from invoice.forms import CompanyForm, ClientForm, ProductForm, BalanceForm, InvoiceForm, InvoiceItemForm, InvoiceItemFormSet, PaymentForm
+from invoice.models import Company, Client, Product, Balance, Invoice, InvoiceItem, Payment
 
 def index(request):
     return render(request, 'invoice/index.html')
@@ -222,6 +222,42 @@ class InvoiceUpdate(UpdateView):
 class InvoiceDelete(DeleteView):
     success_url = reverse_lazy('list_invoices')
     model = Invoice
+
+    def get(self, *a, **kw):
+        return self.delete(*a, **kw)
+
+
+
+# Payment Crud
+
+class PaymentList(ListView):
+    model = Payment
+
+
+class PaymentCreate(CreateView):
+    form_class = PaymentForm
+    template_name = "invoice/payment_form.html"
+    success_url = reverse_lazy('list_payments')
+    def form_valid(self, form):
+        context = {}
+        messages.success(self.request, 'Payment details saved.')
+        return super().form_valid(form)
+
+
+class PaymentUpdate(UpdateView):
+    form_class = PaymentForm
+    model = Payment
+    template_name = "invoice/payment_form.html"
+    success_url = reverse_lazy('list_payments')
+    def form_valid(self, form):
+        context = {}
+        messages.success(self.request, 'Payment details saved.')
+        return super().form_valid(form)
+
+
+class PaymentDelete(DeleteView):
+    success_url = reverse_lazy('list_payments')
+    model = Payment
 
     def get(self, *a, **kw):
         return self.delete(*a, **kw)

@@ -1,0 +1,39 @@
+{% extends 'invoice/base.html' %}
+{% block 'body' %}
+{% load widget_tweaks %}
+
+<div class="container mt-5">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Invoice</th>
+        <th scope="col">Amount paid</th>
+        <th scope="col">Client</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for payment in object_list %}
+      <tr>
+        <td>{{ payment.date }}</td>
+        <td>{{ payment.invoice }}</td>
+        <td>{{ payment.amountPaid }}</td>
+        <td>{{ payment.invoice.client }}</td>
+        <td>
+            <form class="form-inline" action="{% url 'delete_payment' payment.id %}" method="post">
+              {% csrf_token %}
+              <a href="{% url 'update_payment' payment.id %}">
+                <button type="button" class="btn btn-primary m-1">Update</button>
+              </a>
+              <button type="submit" class="btn btn-danger m-1">Delete</button>
+            </form>
+          </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock %}

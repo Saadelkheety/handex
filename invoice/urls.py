@@ -21,4 +21,8 @@ urlpatterns = [
     path("create_invoice/", views.InvoiceCreate.as_view(), name="create_invoice"),
     path("update_invoice/<int:pk>/", views.InvoiceUpdate.as_view(), name="update_invoice"),
     path("delete_invoice/<int:pk>/", views.InvoiceDelete.as_view(), name="delete_invoice"),
+    path("payments/", views.PaymentList.as_view(), name="list_payments"),
+    path("create_payment/", views.PaymentCreate.as_view(), name="create_payment"),
+    path("update_payment/<int:pk>/", views.PaymentUpdate.as_view(), name="update_payment"),
+    path("delete_payment/<int:pk>/", views.PaymentDelete.as_view(), name="delete_payment"),
 ]

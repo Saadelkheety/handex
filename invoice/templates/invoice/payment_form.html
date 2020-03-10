@@ -1,0 +1,30 @@
+{% extends 'invoice/base.html' %}
+{% block 'body' %}
+{% load widget_tweaks %}
+
+    <div class="container">
+
+      <h1 class="m-5">{% if payment %}Update the payment details:{% else %}Add the payment details:{% endif %}</h1>
+
+      <h2>{{ note }}</h2>
+
+
+      <form {% if payment %} action="{% url 'update_payment' payment.id %}" {% else %} action="{% url 'create_payment' %}" {% endif %} method="post" class="text-center">
+          {% csrf_token %}
+          {% for field in form %}
+        <div class="form-group {%if field.errors %}alert alert-danger{%endif%} mx-auto">
+
+
+            {{ field.errors }}
+            {% render_field field class="form-control" placeholder=field.label %}
+
+
+        </div>
+        {% endfor %}
+
+          <button type="submit" class="btn btn-primary">{% if payment %}Save updates{% else %}Submit{% endif %}</button>
+      </form>
+
+
+    </div>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from invoice.models import Company, Client, Product, Balance,Invoice, InvoiceItem
+from invoice.models import Company, Client, Product, Balance,Invoice, InvoiceItem, Payment
 
 
 class InvoiceItemInline(admin.TabularInline):
@@ -19,3 +19,4 @@ admin.site.register(Product)
 admin.site.register(Balance)
 admin.site.register(Invoice, InvoiceAdmin)
 admin.site.register(InvoiceItem)
+admin.site.register(Payment)
