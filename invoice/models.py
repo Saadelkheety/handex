@@ -42,7 +42,7 @@ class Product(models.Model):
     price = models.FloatField()
 
     def __str__(self):
-        return f"{self.name} product"
+        return f"{self.name} ({self.price}$)"
 
  # invoice : invoice number +date + client name + client adress + product
  # + price + total + total invoice + VAT + Total VAT (total invoice * VAT)
@@ -69,14 +69,14 @@ class Invoice(models.Model):
         return amount_paid
 
     def __str__(self):
-        return f"invoice number: {self.number} of the client {self.client.name}"
+        return f"invoice number: {self.number}"
 
 
 class InvoiceItem(models.Model):
     invoice = models.ForeignKey('Invoice', on_delete=models.CASCADE)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     price = models.FloatField()
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=1)
     date = models.DateField(auto_now=True)
 
     def __str__(self):

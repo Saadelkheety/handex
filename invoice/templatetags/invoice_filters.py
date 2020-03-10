@@ -1,4 +1,5 @@
 from django import template
+from invoice.models import Product
 
 register = template.Library()
 
@@ -24,3 +25,9 @@ def sub(value, arg):
             return value - arg
         except Exception:
             return ''
+
+
+@register.simple_tag
+def get_obj(pk, attr):
+    obj = getattr(Product.objects.get(pk=int(pk)), attr)
+    return obj

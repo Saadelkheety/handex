@@ -1,6 +1,7 @@
 {% extends 'invoice/base.html' %}
 {% block 'body' %}
 {% load widget_tweaks %}
+{% load invoice_filters %}
 
 <div class="container">
 
@@ -24,6 +25,8 @@
     <h3>{% if invoice %}Update invoice products: {% else %}Add products to the invoice:{% endif %}</h3>
      {{ formset.management_form }}
     {% for form in formset %}
+    <div class="">
+
       <br>
       {% for field in form %}
           {{ field.errors }}
@@ -32,13 +35,30 @@
           {% endif %}
           {% render_field field class="form-control mb-2 mr-sm-2" placeholder=field.label %}
       {% endfor %}
-
+</div>
     {% endfor %}
 
 
     <button type="submit" class="btn btn-primary">{% if invoice %}Save updates{% else %}Submit{% endif %}</button>
   </form>
-
-
 </div>
+<script type="text/javascript">
+  document.querySelectorAll("select").forEach((select) => {
+    select.onchange = function(){
+      var price = 0;
+      const value = this.value;
+      {% autoescape off %}
+      const products = {{ products }}
+      {% endautoescape %}
+      for (var index=0; index < products.length; index++ ) {
+        if (products[index].id == value) {
+            price = products[index].price;
+        }
+      }
+      const name = this.name.replace("product", "price")
+      console.log(price, name);
+      document.querySelector(`input[name=${name}]`).value = price;
+    }
+  });
+</script>
 {% endblock %}

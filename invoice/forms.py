@@ -57,6 +57,5 @@ class InvoiceItemForm(ModelForm):
 InvoiceItemFormSet = inlineformset_factory(Invoice,
     InvoiceItem,
     form=InvoiceItemForm,
-    fields=('product', 'price', 'quantity'),
     extra=3,
     can_delete=False)
