@@ -161,7 +161,6 @@ class InvoiceCreate(CreateView):
         form = self.get_form(form_class)
         formset = InvoiceItemFormSet()
         products = list(Product.objects.values())
-        print(products)
         return self.render_to_response(
             self.get_context_data(form=form,formset=formset, products=products))
 
@@ -196,8 +195,9 @@ class InvoiceUpdate(UpdateView):
         form = InvoiceForm(instance=self.object)
         formset = InvoiceItemFormSet(instance=self.object)
         formset.can_delete = True
+        products = list(Product.objects.values())
         return self.render_to_response(
-            self.get_context_data(form=form,formset=formset))
+            self.get_context_data(form=form,formset=formset, products=products))
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
