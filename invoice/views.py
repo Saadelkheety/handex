@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
 from django.contrib import messages
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -178,6 +178,9 @@ class InvoiceCreate(CreateView):
         self.object = form.save()
         formset.instance = self.object
         formset.save()
+        addmore = self.request.GET["addmore"]
+        if addmore == "True":
+                return redirect("update_invoice", pk=self.object.id)
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, formset):
@@ -213,6 +216,9 @@ class InvoiceUpdate(UpdateView):
         self.object = form.save()
         formset.instance = self.object
         formset.save()
+        addmore = self.request.GET["addmore"]
+        if addmore == "True":
+                return redirect("update_invoice", pk=self.object.id)
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, formset):

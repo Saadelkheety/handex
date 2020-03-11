@@ -1,12 +1,15 @@
 from django.db import models
-
+from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Company : Name + Adress + Tel + VAT
+
+
 class Company(models.Model):
     name = models.CharField(max_length=64)
     address = models.TextField(blank=True)
     tel = models.CharField(max_length=32)
-    vat = models.CharField(max_length=256)
+    vat = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)],)
 
     def __str__(self):
         return f"{self.name} company"
@@ -17,7 +20,7 @@ class Company(models.Model):
 class Client(models.Model):
     name = models.CharField(max_length=256)
     code = models.CharField(max_length=64, unique=True)
-    address = models.TextField(blank=True)
+    address = models.TextField()
     initialBalance = models.FloatField()
 
     def __str__(self):
@@ -50,9 +53,11 @@ class Product(models.Model):
 
 
 class Invoice(models.Model):
+    date = models.DateField(default=timezone.now())
     number = models.CharField(max_length=64, unique=True)
-    date = models.DateField(auto_now_add=True)
     client = models.ForeignKey('Client', on_delete=models.CASCADE)
+    address = models.TextField()
+    vat = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)],)
 
     def amountDue(self):
         items = self.invoiceitem_set.all()
@@ -69,7 +74,7 @@ class Invoice(models.Model):
         return amount_paid
 
     def __str__(self):
-        return f"invoice number: {self.number}"
+        return f"invoice number: {self.number} of client {self.client}"
 
 
 class InvoiceItem(models.Model):

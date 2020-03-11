@@ -48,6 +48,17 @@ class InvoiceForm(ModelForm):
         fields = "__all__"
 
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['address'].widget.attrs.update({'rows': '3'})
+        try:
+            vat = Company.objects.all()[0].vat
+            print(vat)
+        except Exception as e:
+            pass
+        self.fields['vat'].widget.attrs.update({'value':vat})
+
+
 class PaymentForm(ModelForm):
     class Meta:
         model = Payment

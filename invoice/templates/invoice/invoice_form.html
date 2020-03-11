@@ -13,33 +13,43 @@
   <form {% if invoice %} action="{% url 'update_invoice' invoice.id %}" {% else %} action="{% url 'create_invoice' %}" {% endif %} method="post" class="text-center">
     {% csrf_token %}
     {% for field in form %}
-    <div class="form-group {%if field.errors %}alert alert-danger{%endif%} mx-auto">
-
-
+    <div class="form-group row {%if field.errors %}alert alert-danger{%endif%} mx-auto">
+      <label for="id_{{ field.label }}" class="col-sm-2 col-form-label">{{field.label}}</label>
       {{ field.errors }}
+      <div class="col-sm-10">
       {% render_field field class="form-control mb-2 mr-sm-2" placeholder=field.label %}
-
+      </div>
+      </div>
       {% endfor %}
-    </div>
 
     <h3>{% if invoice %}Update invoice products: {% else %}Add products to the invoice:{% endif %}</h3>
      {{ formset.management_form }}
-    {% for form in formset %}
-    <div class="">
-
-      <br>
-      {% for field in form %}
-          {{ field.errors }}
-          {% if field.label == "Delete" %}
-          {{ field.label }}
-          {% endif %}
-          {% render_field field class="form-control mb-2 mr-sm-2" placeholder=field.label %}
-      {% endfor %}
-</div>
-    {% endfor %}
-
-
+       <table class="table table-striped">
+            <thead>
+               <tr>
+                 <th>#</th>
+                 <th scope="col">Product</th>
+                 <th scope="col">Price</th>
+                 <th scope="col">Quantity</th>
+                 <th scope="col">Delete</th>
+               </tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                <tr>
+                  <td>{{forloop.counter}}</td>
+                  {% for field in form.visible_fields %}
+                      <td>
+                      {{ field.errors }}
+                      {% render_field field class="form-control mb-2 mr-sm-2" placeholder=field.label %}
+                      </td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
     <button type="submit" class="btn btn-primary">{% if invoice %}Save updates{% else %}Submit{% endif %}</button>
+    <button type="submit" formaction="{% if invoice %}{% url 'update_invoice' invoice.id %}?addmore=True{% else %}{% url 'create_invoice' %}?addmore=True{% endif %}" class="btn btn-info">Or add more products</button>
   </form>
 </div>
 <script type="text/javascript">
