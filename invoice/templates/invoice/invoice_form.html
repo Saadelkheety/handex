@@ -48,8 +48,8 @@
                 {% endfor %}
             </tbody>
           </table>
-    <button type="submit" class="btn btn-primary">{% if invoice %}Save updates{% else %}Submit{% endif %}</button>
-    <button type="submit" formaction="{% if invoice %}{% url 'update_invoice' invoice.id %}?addmore=True{% else %}{% url 'create_invoice' %}?addmore=True{% endif %}" class="btn btn-info">Or add more products</button>
+    <button type="submit" class="btn btn-primary mb-5 mr-2">{% if invoice %}Save updates{% else %}Submit{% endif %}</button>
+    <button type="submit" formaction="{% if invoice %}{% url 'update_invoice' invoice.id %}?addmore=True{% else %}{% url 'create_invoice' %}?addmore=True{% endif %}" class="btn btn-info mb-5">Or add more products</button>
   </form>
 </div>
 <script type="text/javascript">

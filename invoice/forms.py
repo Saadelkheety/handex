@@ -46,6 +46,7 @@ class InvoiceForm(ModelForm):
     class Meta:
         model = Invoice
         fields = "__all__"
+        exclude = ('paid',)
 
 
     def __init__(self, *args, **kwargs):
@@ -63,6 +64,9 @@ class PaymentForm(ModelForm):
     class Meta:
         model = Payment
         fields = "__all__"
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['invoice'].queryset = Invoice.objects.filter(paid=False)
 
 
 class InvoiceItemForm(ModelForm):
