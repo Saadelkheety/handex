@@ -178,9 +178,12 @@ class InvoiceCreate(CreateView):
         self.object = form.save()
         formset.instance = self.object
         formset.save()
-        addmore = self.request.GET["addmore"]
-        if addmore == "True":
-                return redirect("update_invoice", pk=self.object.id)
+        try:
+            addmore = self.request.GET["addmore"]
+            if addmore == "True":
+                    return redirect("update_invoice", pk=self.object.id)
+        except Exception as e:
+            pass
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, formset):
@@ -216,9 +219,12 @@ class InvoiceUpdate(UpdateView):
         self.object = form.save()
         formset.instance = self.object
         formset.save()
-        addmore = self.request.GET["addmore"]
-        if addmore == "True":
-                return redirect("update_invoice", pk=self.object.id)
+        try:
+            addmore = self.request.GET["addmore"]
+            if addmore == "True":
+                    return redirect("update_invoice", pk=self.object.id)
+        except Exception as e:
+            pass
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, formset):
