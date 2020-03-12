@@ -250,6 +250,21 @@ class PaymentCreate(CreateView):
     form_class = PaymentForm
     template_name = "invoice/payment_form.html"
     success_url = reverse_lazy('list_payments')
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form = self.get_form()
+        try:
+            client_id = int(self.request.GET["client_id"])
+            client = Client.objects.get(id=client_id)
+            form.fields['invoice'].queryset = Invoice.objects.filter(paid=False, client=client)
+            return self.render_to_response(
+                self.get_context_data(form=form, client=client))
+        except Exception as e:
+            return self.render_to_response(
+                self.get_context_data(form=form))
+
+
     def form_valid(self, form):
         context = {}
         messages.success(self.request, 'Payment details saved.')

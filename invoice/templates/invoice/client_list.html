@@ -27,6 +27,9 @@
                 <button type="button" class="btn btn-primary m-1">Update</button>
               </a>
               <button type="submit" class="btn btn-danger m-1">Delete</button>
+              <a href="{% url 'create_payment' %}?client_id={{ client.id }}">
+                <button type="button" class="btn btn-primary m-1">Add a payment</button>
+              </a>
             </form>
           </td>
       </tr>

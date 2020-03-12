@@ -4,7 +4,7 @@
 
     <div class="container">
 
-      <h1 class="m-5">{% if payment %}Update the payment details:{% else %}Add the payment details:{% endif %}</h1>
+      <h1 class="m-5">{% if payment %}Update the payment details:{% else %}Add the payment details{% endif %}{% if client %} for {{ client }}{% endif %}:</h1>
 
       <h2>{{ note }}</h2>
 
