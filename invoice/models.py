@@ -53,7 +53,7 @@ class Product(models.Model):
 
 
 class Invoice(models.Model):
-    date = models.DateField(default=timezone.now())
+    date = models.DateField(default=timezone.now)
     number = models.CharField(max_length=64, unique=True)
     client = models.ForeignKey('Client', on_delete=models.CASCADE)
     address = models.TextField()
@@ -94,6 +94,6 @@ class Payment(models.Model):
     invoice = models.ForeignKey('Invoice', on_delete=models.CASCADE)
     amountPaid = models.FloatField()
     date = models.DateField(auto_now_add=True)
-    
+
     def __str__(self):
         return f"payment of {self.invoice}"
