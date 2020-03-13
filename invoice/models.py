@@ -36,7 +36,7 @@ class Balance(models.Model):
         invoices = self.client.invoice_set.all()
         sales_amount = 0.0
         for invoice in invoices:
-            sales_amount += ((invoice.amountDue()*invoice.vat)+invoice.amountDue())
+            sales_amount += ((invoice.amountDue()*(invoice.vat/100))+invoice.amountDue())
         return sales_amount
 
     def payments(self):
