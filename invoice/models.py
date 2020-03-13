@@ -68,7 +68,6 @@ class Invoice(models.Model):
     date = models.DateField(default=timezone.now)
     number = models.CharField(max_length=64, unique=True)
     client = models.ForeignKey('Client', on_delete=models.CASCADE)
-    address = models.TextField()
     paid = models.BooleanField(default=False)
     vat = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)],)
 
