@@ -61,11 +61,11 @@
         </tr>
         <tr>
           <td>Total Vat:</td>
-          <td>{{ object.vat|div:"10"|mult:object.amountDue }}</td>
+          <td>{{ object.vat|div:"100"|mult:object.amountDue }}</td>
         </tr>
         <tr>
           <td>General Total:</td>
-          <td>{{ object.vat|div:"10"|mult:object.amountDue|add:object.amountDue }}</td>
+          <td>{{ object.vat|div:"100"|mult:object.amountDue|add:object.amountDue }}</td>
         </tr>
       </tbody>
       </table>
