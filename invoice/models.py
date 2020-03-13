@@ -105,7 +105,7 @@ class InvoiceItem(models.Model):
 class Payment(models.Model):
     invoice = models.ForeignKey('Invoice', on_delete=models.CASCADE)
     amountPaid = models.FloatField()
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=timezone.now)
 
     def __str__(self):
         return f"payment of {self.invoice}"

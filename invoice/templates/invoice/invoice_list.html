@@ -6,7 +6,6 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th scope="col">Invoice Date</th>
         <th scope="col">Invoice number</th>
         <th scope="col">Client</th>
         <th scope="col">Date</th>
@@ -18,7 +17,6 @@
     <tbody>
       {% for invoice in object_list %}
       <tr>
-        <td>{{ invoice.date }}</td>
         <td>{{ invoice.number }}</td>
         <td>{{ invoice.client }}</td>
         <td>{{ invoice.date }}</td>

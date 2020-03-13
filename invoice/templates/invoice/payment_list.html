@@ -6,6 +6,7 @@
   <table class="table table-striped">
     <thead>
       <tr>
+        <th scope="col">ID</th>
         <th scope="col">Date</th>
         <th scope="col">Invoice</th>
         <th scope="col">Amount paid</th>
@@ -16,6 +17,7 @@
     <tbody>
       {% for payment in object_list %}
       <tr>
+        <td>{{ payment.id }}</td>
         <td>{{ payment.date }}</td>
         <td>{{ payment.invoice }}</td>
         <td>{{ payment.amountPaid }}</td>
