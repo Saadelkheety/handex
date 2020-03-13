@@ -8,7 +8,8 @@ def payment_added(sender, instance, **kwargs):
     invoice = instance.invoice
     amountpaid = invoice.amountPaid()
     amountdue = invoice.amountDue()
-    if amountpaid >= amountdue:
+    totaldue = (invoice.vat/100)*amountdue+amountdue
+    if amountpaid >= totaldue:
         invoice.paid = True
 
 

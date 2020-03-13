@@ -22,7 +22,7 @@
         <td>{{ invoice.number }}</td>
         <td>{{ invoice.client }}</td>
         <td>{{ invoice.date }}</td>
-        <td>{{invoice.amountDue}}</td>
+        <td>{{ invoice.vat|div:"100"|mult:invoice.amountDue|add:invoice.amountDue }}</td>
         <td>{{invoice.amountPaid}}</td>
         <td>
             <form class="form-inline" action="{% url 'delete_invoice' invoice.id %}" method="post">
