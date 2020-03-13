@@ -74,6 +74,12 @@ class InvoiceItemForm(ModelForm):
         fields = "__all__"
 
 
+class ClientToPaymentForm(ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ('client',)
+
+
 InvoiceItemFormSet = inlineformset_factory(Invoice,
     InvoiceItem,
     form=InvoiceItemForm,

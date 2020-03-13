@@ -2,10 +2,10 @@ from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, re
 from django.contrib import messages
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 
-from invoice.forms import CompanyForm, ClientForm, ProductForm, BalanceForm, InvoiceForm, InvoiceItemForm, InvoiceItemFormSet, PaymentForm
+from invoice.forms import CompanyForm, ClientForm, ProductForm, BalanceForm, InvoiceForm, InvoiceItemForm, InvoiceItemFormSet, PaymentForm, ClientToPaymentForm
 from invoice.models import Company, Client, Product, Balance, Invoice, InvoiceItem, Payment
 
 def index(request):
@@ -204,7 +204,7 @@ class InvoiceUpdate(UpdateView):
     form_class = InvoiceForm
     model = Invoice
     template_name = "invoice/invoice_form.html"
-    
+
     def get_success_url(self):
         return reverse_lazy('invoice_details', kwargs={'pk' : self.object.pk})
 
@@ -300,3 +300,14 @@ class PaymentDelete(DeleteView):
 
     def get(self, *a, **kw):
         return self.delete(*a, **kw)
+
+
+class ClientToPaymentFormView(FormView):
+    template_name = 'invoice/clienttopayment_form.html'
+    form_class = ClientToPaymentForm
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        client = self.request.POST.get('client')
+        return redirect(f"{reverse_lazy('create_payment')}?client_id={client}")

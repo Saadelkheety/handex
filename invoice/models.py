@@ -30,9 +30,21 @@ class Client(models.Model):
 # Client Balance : Client Name + Total Sales + Total Payments + Balance (initial balance+Sales-Payments)
 class Balance(models.Model):
     client = models.OneToOneField('Client', on_delete=models.CASCADE)
-    sales = models.FloatField()
-    payments = models.FloatField()
     # balance = models.FloatField()
+
+    def sales(self):
+        invoices = self.client.invoice_set.all()
+        sales_amount = 0.0
+        for invoice in invoices:
+            sales_amount += invoice.amountDue()
+        return sales_amount
+
+    def payments(self):
+        invoices = self.client.invoice_set.all()
+        payments_amount = 0.0
+        for invoice in invoices:
+            payments_amount += invoice.amountPaid()
+        return payments_amount
 
     def __str__(self):
         return f"{self.client.name} balance"
