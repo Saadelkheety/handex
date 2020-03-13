@@ -74,6 +74,7 @@ class Invoice(models.Model):
             amount_paid += payment.amountPaid
         return amount_paid
 
+
     def __str__(self):
         return f"invoice number: {self.number} of client {self.client}"
 

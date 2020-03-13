@@ -1,0 +1,88 @@
+{% extends 'invoice/base.html' %}
+{% block 'body' %}
+{% load widget_tweaks %}
+{% load invoice_filters %}
+<div class="container mt-5">
+  <table class="table table-striped">
+    <h1>Invoice Details:</h1>
+       <tbody>
+         <!-- Header ( date invoice number client client adress) -->
+         <tr>
+           <td>Invoice Date:</td>
+           <td>{{object.date }}</td>
+         </tr>
+         <tr>
+           <td>Invoice number:</td>
+           <td>{{object.number}}</td>
+         </tr>
+         <tr>
+           <td>Invoice Client:</td>
+           <td>{{ object.client }}</td>
+         </tr>
+         <tr>
+           <td>Client Address:</td>
+           <td>{{ object.address }}</td>
+         </tr>
+       </tbody>
+     </table>
+    <!-- Body (product price quantity total=qty*price) -->
+    <table class="table table-striped">
+          <h5>Invoice Products:</h5>
+      <thead>
+        <tr>
+          <th scope="col">Product</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+     {% for product in object.invoiceitem_set.all %}
+     <tr>
+     <td>{{product.product}}</td>
+     <td>{{product.price}}</td>
+     <td>{{product.quantity}}</td>
+     <td>{{product.quantity|mult:product.price}}</td>
+     </tr>
+     {% endfor %}
+     <tbody>
+     </table>
+            <hr>
+     <!-- Footer (total products=sum of totals products, vat, total vat=vat*total products, general total=total products+vat) -->
+     <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td>Total products:</td>
+          <td>{{ object.amountDue }}</td>
+        </tr>
+        <tr>
+          <td>Vat:</td>
+          <td>{{ object.vat }}%</td>
+        </tr>
+        <tr>
+          <td>Total Vat:</td>
+          <td>{{ object.vat|div:"10"|mult:object.amountDue }}</td>
+        </tr>
+        <tr>
+          <td>General Total:</td>
+          <td>{{ object.vat|div:"10"|mult:object.amountDue|add:object.amountDue }}</td>
+        </tr>
+      </tbody>
+      </table>
+      <table class="table table-sm ">
+        <tbody>
+          <tr>
+            <td class="submit">
+              <a href="{% url "list_invoices" %}"><button type="button" class="btn btn-success">Submit</button></a>
+            </td>
+            <td>
+              <a href="{% url "update_invoice" object.id %}"><button type="button" class="btn btn-info">Edit</button></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+
+
+{% endblock %}

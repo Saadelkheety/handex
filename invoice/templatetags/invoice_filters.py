@@ -27,6 +27,29 @@ def sub(value, arg):
             return ''
 
 
+@register.filter(is_safe=False)
+def mult(value, arg):
+    """Add the arg to the value."""
+    try:
+        return round(float(value) * float(arg), 3)
+    except (ValueError, TypeError):
+        try:
+            return value * arg
+        except Exception:
+            return ''
+
+
+@register.filter(is_safe=False)
+def div(value, arg):
+    """Add the arg to the value."""
+    try:
+        return round(float(value) / float(arg), 3)
+    except (ValueError, TypeError):
+        try:
+            return value / arg
+        except Exception:
+            return ''
+
 @register.simple_tag
 def get_obj(pk, attr):
     obj = getattr(Product.objects.get(pk=int(pk)), attr)

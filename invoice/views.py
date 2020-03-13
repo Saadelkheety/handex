@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
 from django.contrib import messages
 from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
@@ -145,6 +146,13 @@ class BalanceDelete(DeleteView):
 
 
 # invoice Crud
+
+class InvoiceDetailView(DetailView):
+    model = Invoice
+
+
+
+
 class InvoiceList(ListView):
     model = Invoice
 
@@ -153,7 +161,9 @@ class InvoiceCreate(CreateView):
     form_class = InvoiceForm
     model = Invoice
     template_name = "invoice/invoice_form.html"
-    success_url = reverse_lazy('list_invoices')
+
+    def get_success_url(self):
+        return reverse_lazy('invoice_details', kwargs={'pk' : self.object.pk})
 
     def get(self, request, *args, **kwargs):
         self.object = None
@@ -194,7 +204,9 @@ class InvoiceUpdate(UpdateView):
     form_class = InvoiceForm
     model = Invoice
     template_name = "invoice/invoice_form.html"
-    success_url = reverse_lazy('list_invoices')
+    
+    def get_success_url(self):
+        return reverse_lazy('invoice_details', kwargs={'pk' : self.object.pk})
 
     def get(self, request, pk, *args, **kwargs):
         self.object = self.get_object()

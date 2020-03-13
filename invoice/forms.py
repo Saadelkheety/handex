@@ -54,7 +54,6 @@ class InvoiceForm(ModelForm):
         self.fields['address'].widget.attrs.update({'rows': '3'})
         try:
             vat = Company.objects.all()[0].vat
-            print(vat)
         except Exception as e:
             pass
         self.fields['vat'].widget.attrs.update({'value':vat})
