@@ -16,4 +16,7 @@ def payment_added(sender, instance, **kwargs):
 @receiver(post_save, sender=Client)
 def add_balance(sender, instance, **kwargs):
     balance = Balance(client=instance)
-    balance.save()
+    try:
+        balance.save()
+    except Exception as e:
+        pass
